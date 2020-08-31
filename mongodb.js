@@ -1,10 +1,10 @@
-const mongodb = require('mongodb')
-
-const MongoClient = mongodb.MongoClient 
+const { MongoClient, ObjectID} = require('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
 
+const id = new ObjectID()
+console.log(id)
 
 MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) => {
     if (error) {
@@ -40,27 +40,29 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
     //     console.log(result.ops)
     // })
 
-    db.collection('users').insertMany([
-        {
-            description: 'Apply to 3 jobs by Wednesday.', 
-            completed: false
-        },
-        {
-            description: 'Wake up at 4am every day this week.', 
-            completed: false
-        },
-        {
-            description: 'Go to the gym 5 out of 7 days this week.', 
-            completed: false
-        }
-    ], (error, result) => {
-        if (error) {
-            return console.log('cannot get docs!')
-        }
+    // db.collection('users').insertMany([
+    //     {
+    //         description: 'Apply to 3 jobs by Wednesday.', 
+    //         completed: false
+    //     },
+    //     {
+    //         description: 'Wake up at 4am every day this week.', 
+    //         completed: false
+    //     },
+    //     {
+    //         description: 'Go to the gym 5 out of 7 days this week.', 
+    //         completed: false
+    //     }
+    // ], (error, result) => {
+    //     if (error) {
+    //         return console.log('cannot get docs!')
+    //     }
 
-        console.log(result.ops)
+    //     console.log(result.ops)
 
-    })
+    // })
+
+
 
 
 })
