@@ -44,8 +44,9 @@ app.get('/users/:id', async (req, res) => {
 })
 
 app.patch('/users/:id', async (req, res) => {
-
+    console.log(req.body)
     const updates = Object.keys(req.body)
+    console.log(updates)
     const allowedUpdates = ['name', 'email', 'password', 'age']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
@@ -95,20 +96,27 @@ app.get('/tasks/:id', async (req, res) => {
     }
 })
 
-// app.patch('/users/:id', async (req, res) => {
-//     try {
-//         const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true })
-        
-//         if (!user) {
-//             return res.status(404).send()
-//         }
+app.patch('/tasks/:id', async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allowedUpdates = ['completed', 'description']
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update))
 
-//         res.send(user)
-//     } catch (error) {
-//         res.status(400).send(error)
-//     }
-// })
+    if (!isValidOperation) {
+        return res.status(400).send({error: "Not a valid update on Task"})
+    }
 
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+        if (!task) {
+            return res.status(404).send()
+        }
+
+        res.send(task)
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
 
 app.listen(port, () => {
     console.log('Server is on port : ', port)
