@@ -4,6 +4,7 @@ require('./db/mongoose')
 const User = require('./models/user')
 const Task = require('./models/task')
 const { response } = require('express')
+const { findByIdAndDelete } = require('./models/user')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -56,6 +57,20 @@ app.patch('/users/:id', async (req, res) => {
 
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
+
+        if (!user) {
+            return res.status(404).send()
+        }
+
+        res.send(user)
+    } catch (error) {
+        res.status(500).send()
+    }
+})
+
+app.delete('/users/:id', async (req,res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
 
         if (!user) {
             return res.status(404).send()
